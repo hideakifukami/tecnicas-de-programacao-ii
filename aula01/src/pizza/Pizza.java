@@ -7,7 +7,7 @@ public class Pizza {
 
 	private int total_ingredientes;
 	private static int total_pizzas;
-	static Map<String, Integer> tabela_ingredientes = new HashMap<String, Integer>();
+	private static Map<String, Integer> tabela_ingredientes = new HashMap<String, Integer>();
 	
 	
 	public Pizza() {
@@ -41,7 +41,7 @@ public class Pizza {
 		return total_ingredientes;
 	}
 
-	public static int getTotal_pizzas() {
+	public int getTotal_pizzas() {
 		return total_pizzas;
 	}
 		
