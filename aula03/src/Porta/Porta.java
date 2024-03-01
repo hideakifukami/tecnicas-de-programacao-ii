@@ -10,26 +10,12 @@ public class Porta {
 	
 	public Estado estado;
 	
-	public void clicar() {
-        if (estado == FECHADO) {
-            estado = ABRINDO;
-        } else if (estado == ABRINDO) {
-            estado = ABERTO;
-        } else if (estado == ABERTO) {
-            estado = MANTER_ABERTO;
-        } else if (estado == MANTER_ABERTO) {
-            estado = FECHANDO;
-        } else if (estado == FECHANDO) {
-            estado = FECHADO;
-        } 
-    }
-	
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
 	
-	public void exibirEstado() {
-		estado.exibirEstado();
+	public void status() {
+		estado.status();
 	}
 	
 }

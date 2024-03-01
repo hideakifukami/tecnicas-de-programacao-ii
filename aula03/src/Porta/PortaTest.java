@@ -20,18 +20,18 @@ class PortaTest {
 	void testClicar() {
 		Porta p1 = new Porta();
 		p1.setEstado(p1.FECHADO);
-		p1.clicar();
+		p1.estado.clicar(p1);
 		assertTrue(p1.estado instanceof EstadoAbrindo);
 	}
 
 	@Test
-	void testExibirEstado() {
+	void testStatus() {
 		Porta p1 = new Porta();
 		p1.setEstado(p1.FECHADO);
 		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         
-        p1.exibirEstado();
+        p1.status();
      
         assertTrue(outContent.toString().contains("FECHADO"));
 	}
