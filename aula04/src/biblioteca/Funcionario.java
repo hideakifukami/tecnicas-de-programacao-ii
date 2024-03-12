@@ -2,33 +2,17 @@ package biblioteca;
 
 import java.util.ArrayList;
 
-import interfaces.Mantivel;
-import interfaces.Pesquisavel;
-
-public class Funcionario implements Mantivel, Pesquisavel {
+public class Funcionario {
 
 	private String nome;
 	private int matricula;
-	private static ArrayList<Funcionario> lista_funcionarios = new ArrayList<Funcionario>();
-
 	
-	public Funcionario() {}
+	private static ArrayList<Funcionario> listaFuncionarios = new ArrayList<Funcionario>();
 	
 	public Funcionario(String nome, int matricula) {
 		this.nome = nome;
 		this.matricula = matricula;
-	}
-
-	@Override
-	public void pesquisar() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void manter() {
-		
-		
+		listaFuncionarios.add(this);
 	}
 
 	public String getNome() {
@@ -46,5 +30,15 @@ public class Funcionario implements Mantivel, Pesquisavel {
 	public void setMatricula(int matricula) {
 		this.matricula = matricula;
 	}
+	
+	public static ArrayList<Funcionario> getListaFuncionarios() {
+		return listaFuncionarios;
+	}
 
+	@Override
+	public String toString() {
+		return String.format("Funcionario [nome=%s, matricula=%s]", nome, matricula);
+	}
+
+	
 }
