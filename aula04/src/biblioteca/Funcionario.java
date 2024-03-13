@@ -15,6 +15,16 @@ public class Funcionario {
 		listaFuncionarios.add(this);
 	}
 
+	public static Funcionario pesquisarPorMatricula(int matricula) {		
+		for (Funcionario funcionario: listaFuncionarios) {
+			if (funcionario.matricula == matricula) {
+				return funcionario;
+			}
+		}
+		
+		return null;
+	}
+	
 	public String getNome() {
 		return nome;
 	}

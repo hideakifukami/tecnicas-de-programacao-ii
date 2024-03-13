@@ -1,19 +1,18 @@
 package biblioteca;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Livro {
 
 	private int isbn;
 	private String titulo;
-	private Autor[] autores;
+	private ArrayList<Autor> autores;
 	private Editora editora;
 	private AreaDaAdvocacia areaDaAdvocacia;
 	
 	private static ArrayList<Livro> listaDeLivros = new ArrayList<Livro>();
 	
-	public Livro(int isbn, String titulo, Autor[] autores, Editora editora, AreaDaAdvocacia areaDaAdvocacia) {
+	public Livro(int isbn, String titulo, ArrayList<Autor> autores, Editora editora, AreaDaAdvocacia areaDaAdvocacia) {
 		this.isbn = isbn;
 		this.titulo = titulo;
 		this.autores = autores;
@@ -35,10 +34,10 @@ public class Livro {
 	public static ArrayList<Livro> pesquisarPorAutor(String autor) {
 		ArrayList<Livro> listaAuxiliar = new ArrayList<Livro>();
 		for (Livro livro: listaDeLivros) {
-			for (Autor autorItem: autores) {
+			for (Autor autorItem: livro.autores) {
 				if (autorItem.getNome().equalsIgnoreCase(autor)) {
 					listaAuxiliar.add(livro);
-				}
+				}	
 			}
 		}
 		return listaAuxiliar;
@@ -62,7 +61,7 @@ public class Livro {
 		return titulo;
 	}
 
-	public Autor[] getAutores() {
+	public ArrayList<Autor> getAutores() {
 		return autores;
 	}
 
@@ -81,8 +80,10 @@ public class Livro {
 	@Override
 	public String toString() {
 		return String.format("Livro [isbn=%s, titulo=%s, autores=%s, editora=%s, areaDaAdvocacia=%s]", isbn, titulo,
-				Arrays.toString(autores), editora, areaDaAdvocacia);
+				autores, editora, areaDaAdvocacia);
 	}
+
+	
 	
 	
 	

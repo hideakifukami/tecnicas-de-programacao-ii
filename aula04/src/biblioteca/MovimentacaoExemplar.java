@@ -1,22 +1,23 @@
 package biblioteca;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MovimentacaoExemplar {
-
-	private Date dataEmprestimo;
-	private Date dataDevolucao;
+	private int numeroSerie;
+	private LocalDate dataEmprestimo;
+	private LocalDate dataDevolucao;
 	private ArrayList<ExemplarLivro> exemplares;
 	private Funcionario funcionario;
 	
 	private static ArrayList<MovimentacaoExemplar> listaDeMovimentacoes = new ArrayList<MovimentacaoExemplar>();
 	
-	public MovimentacaoExemplar(Funcionario funcionario) {
-		this.dataEmprestimo = new Date();
+	public MovimentacaoExemplar(int matriculaFuncionario) {
+		numeroSerie = listaDeMovimentacoes.size() + 1;
+		this.dataEmprestimo = LocalDate.now();
 		//Dia, Hora, Minuto, Segundo, Milisegundo
-		this.dataDevolucao = new Date(this.dataEmprestimo.getTime() + (5 * 24 * 60 * 60 * 1000));
-		this.funcionario = funcionario;
+		this.dataDevolucao = dataEmprestimo.plusDays(5);
+		this.funcionario = Funcionario.pesquisarPorMatricula(matriculaFuncionario);
 		listaDeMovimentacoes.add(this);
 	}
 
@@ -40,11 +41,11 @@ public class MovimentacaoExemplar {
 		exemplar.registrarDevolucao();
 	}
 
-	public Date getDataEmprestimo() {
+	public LocalDate getDataEmprestimo() {
 		return dataEmprestimo;
 	}
 
-	public Date getDataDevolucao() {
+	public LocalDate getDataDevolucao() {
 		return dataDevolucao;
 	}
 

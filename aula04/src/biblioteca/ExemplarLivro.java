@@ -1,12 +1,11 @@
 package biblioteca;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-
 
 public class ExemplarLivro {
 	private int numeroSerie;
-	private Date dataAquisicao;
+	private LocalDate dataAquisicao;
 	private double precoPago;
 	private boolean emprestado;
 	private boolean servivel;
@@ -14,7 +13,7 @@ public class ExemplarLivro {
 	
 	private static ArrayList<ExemplarLivro> listaExemplares = new ArrayList<ExemplarLivro>();
 
-	public ExemplarLivro(Date dataAquisicao, double precoPago, Livro livro) {
+	public ExemplarLivro(LocalDate dataAquisicao, double precoPago, Livro livro) {
 		numeroSerie = listaExemplares.size() + 1;
 		this.dataAquisicao = dataAquisicao;
 		this.precoPago = precoPago;
@@ -24,6 +23,15 @@ public class ExemplarLivro {
 		listaExemplares.add(this);
 	}
 
+	public static ExemplarLivro pesquisarPorNumeroSerie(int numeroSerie) {
+		for (ExemplarLivro exemplar: listaExemplares) {
+			if (exemplar.numeroSerie == numeroSerie) {
+				return exemplar;
+			}
+		}
+		return null;
+	}
+	
 	public boolean emprestarExemplar() {
 		if (!this.servivel) return false;
 		
@@ -43,7 +51,7 @@ public class ExemplarLivro {
 		return numeroSerie;
 	}
 	
-	public Date getDataAquisicao() {
+	public LocalDate getDataAquisicao() {
 		return dataAquisicao;
 	}
 
