@@ -2,20 +2,15 @@ package biblioteca;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import javax.swing.JOptionPane;
 
 public class Main {
-
-	private static final Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-
-       menuPrincipal();
-     
+       
+		menuPrincipal();
+		
 	}
-
 
 	private static void menuPrincipal() {
 	    boolean sair = false;
@@ -101,41 +96,29 @@ public class Main {
 	}
 	
 	private static ExemplarLivro cadastrarNovoExemplar() {
-        // Cadastro do ISBN
         int isbn = Integer.parseInt(JOptionPane.showInputDialog("Digite o ISBN do livro:"));
-
-        // Cadastro do título
         String titulo = JOptionPane.showInputDialog("Digite o título do livro:");
-
-        // Cadastro dos autores
         boolean novoAutor = true;
         ArrayList<Autor> autores = new ArrayList<>();
         while (novoAutor) {        	
             String nomeAutor = JOptionPane.showInputDialog("Digite o nome do autor:"); 
             Autor autor = new Autor(nomeAutor);
             autores.add(autor);
-
             int opcaoAutor = Integer.parseInt(JOptionPane.showInputDialog("Deseja cadastrar outro autor (1) ou finalizar (2)?"));
             novoAutor = opcaoAutor == 1;
         }
 
-        // Cadastro da editora
         String nomeEditora = JOptionPane.showInputDialog("Digite o nome da editora:");
         Editora editora = new Editora(nomeEditora);
-
-        // Cadastro da área de advocacia        
         String areaDaAdvocaciaStr = JOptionPane.showInputDialog("Digite a área de advocacia do livro:");;
         AreaDaAdvocacia areaDaAdvocacia = new AreaDaAdvocacia(areaDaAdvocaciaStr);
-
         Livro novoLivro = new Livro(isbn, titulo, autores, editora, areaDaAdvocacia);
         
-        // Cadastro do exemplar
         int diaAquisicao = Integer.parseInt(JOptionPane.showInputDialog("Digite o dia de aquisição:"));       
         int mesAquisicao = Integer.parseInt(JOptionPane.showInputDialog("Digite o mês de aquisição:"));        
         int anoAquisicao = Integer.parseInt(JOptionPane.showInputDialog("Digite o ano de aquisição:"));        
         double precoPago = Double.parseDouble(JOptionPane.showInputDialog("Digite o preço pago:"));
 
-        // Criação da data com os parâmetros ano, mês e dia
         LocalDate dataAquisicao = LocalDate.of(anoAquisicao, mesAquisicao, diaAquisicao);
 
         ExemplarLivro exemplarLivro = new ExemplarLivro(dataAquisicao, precoPago, novoLivro);
@@ -148,12 +131,10 @@ public class Main {
         mensagem.append("Livro: ").append(exemplarLivro.getLivro().getTitulo()).append("\n");
         mensagem.append("Autor(es): ");
 
-        // Loop para concatenar autores utilizando StringBuilder
         for (Autor autor : exemplarLivro.getLivro().getAutores()) {
             mensagem.append(autor.getNome()).append(", ");
         }
 
-        // Remove a última vírgula e espaço
         mensagem.deleteCharAt(mensagem.length() - 2);
 
         JOptionPane.showMessageDialog(null, mensagem);
@@ -184,7 +165,7 @@ public class Main {
 	                registrarDevolucao();
 	                break;
 	            case 3:
-	                exemplaresEmprestados();
+		        	JOptionPane.showMessageDialog(null, MovimentacaoExemplar.getListaDeMovimentacoes());	            
 	                break;
 	            case 4:
 	                voltar = true;
@@ -219,10 +200,83 @@ public class Main {
 	}
 
 	private static void registrarDevolucao() {
-	    // ...
+		boolean novaDevolucao = true;
+
+	    while (novaDevolucao) {        	
+            int numeroSerie = Integer.parseInt(JOptionPane.showInputDialog("Digite o número de série do exemplar:")); 
+            ExemplarLivro exemplar = ExemplarLivro.pesquisarPorNumeroSerie(numeroSerie);
+            int servivelInt = Integer.parseInt(JOptionPane.showInputDialog("O livro apresenta danos (1) ou está servível (2)?"));
+            boolean servivel = servivelInt == 2;         
+             
+            MovimentacaoExemplar.devolverExemplar(exemplar, servivel);
+
+            int opcaoExemplar = Integer.parseInt(JOptionPane.showInputDialog("Deseja registar outra devolução (1) ou finalizar (2)?"));
+            novaDevolucao = opcaoExemplar == 1;            
+        }
+	    
+	    JOptionPane.showMessageDialog(null, "Exemplares devolvidos com sucesso!");
+	}
+	
+
+	private static void menuFuncionario() {
+		boolean voltar = false;
+        
+        do {
+            StringBuilder menu = new StringBuilder();
+
+            menu.append("\nMenu de Funcionários\n");
+            menu.append("Selecione uma opção:\n\n");
+            menu.append("1. Cadastrar Funcionário\n");
+            menu.append("2. Desvincular Funcionário\n");
+            menu.append("3. Listar Funcionários\n");
+            menu.append("4. Voltar ao Menu Principal\n");
+
+            int opcao = Integer.parseInt(JOptionPane.showInputDialog(menu.toString() + "\nEscolha uma opção:"));
+
+            switch (opcao) {
+                case 1:
+                    cadastrarFuncionario();
+                    break;
+                case 2:
+                    desvincularFuncionario();
+                    break;
+                case 3:
+                    JOptionPane.showMessageDialog(null, Funcionario.getListaFuncionarios());
+                    break;
+                case 4:
+                    voltar = true;
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opção inválida. Por favor, selecione uma opção válida.");
+            }
+        } while (!voltar);		
 	}
 
-	private static void exemplaresEmprestados() {
-	    // ...
-	}
+	private static void cadastrarFuncionario() {
+        String nome = JOptionPane.showInputDialog("Informe o nome do funcionário:");
+        int matricula = Integer.parseInt(JOptionPane.showInputDialog("Informe a matrícula do funcionário:"));
+        String tipoFuncionario = JOptionPane.showInputDialog("O funcionário é advogado? (S/N)").toUpperCase();
+        
+        if (tipoFuncionario.equals("S")) {
+            String numeroOAB = JOptionPane.showInputDialog("Informe o número da OAB do advogado:");
+            new Advogado(nome, matricula, numeroOAB);
+        } else {
+            new Funcionario(nome, matricula);
+        }
+        
+        JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso!");
+    }
+	
+	private static void desvincularFuncionario() {
+        int matricula = Integer.parseInt(JOptionPane.showInputDialog("Informe a matrícula do funcionário a ser desvinculado:"));
+        Funcionario funcionario = Funcionario.pesquisarPorMatricula(matricula);
+        
+        if (funcionario != null) {
+        	Funcionario.getListaFuncionarios().remove(funcionario);
+            JOptionPane.showMessageDialog(null, "Funcionário desvinculado com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Funcionário não encontrado.");
+        }
+    }
+	
 }

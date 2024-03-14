@@ -13,7 +13,7 @@ public class MovimentacaoExemplar {
 	private static ArrayList<MovimentacaoExemplar> listaDeMovimentacoes = new ArrayList<MovimentacaoExemplar>();
 	
 	public MovimentacaoExemplar(int matriculaFuncionario) {
-		numeroSerie = listaDeMovimentacoes.size() + 1;
+		this.numeroSerie = listaDeMovimentacoes.size() + 1;
 		this.dataEmprestimo = LocalDate.now();
 		//Dia, Hora, Minuto, Segundo, Milisegundo
 		this.dataDevolucao = dataEmprestimo.plusDays(5);
@@ -35,7 +35,7 @@ public class MovimentacaoExemplar {
 		}
 	}
 	
-	public void devolverExemplar(ExemplarLivro exemplar, boolean servivel) {
+	public static void devolverExemplar(ExemplarLivro exemplar, boolean servivel) {
 		if (!servivel) exemplar.registrarInservivel();
 		
 		exemplar.registrarDevolucao();
@@ -64,8 +64,8 @@ public class MovimentacaoExemplar {
 	@Override
 	public String toString() {
 		return String.format(
-				"MovimentacaoExemplar [dataEmprestimo=%s, dataDevolucao=%s, exemplares=%s, funcionario=%s]",
-				dataEmprestimo, dataDevolucao, exemplares, funcionario);
+				"MovimentacaoExemplar [numeroSerie =%s, dataEmprestimo=%s, dataDevolucao=%s, exemplares=%s, funcionario=%s]",
+				numeroSerie, dataEmprestimo, dataDevolucao, exemplares, funcionario);
 	}
 	
 	
