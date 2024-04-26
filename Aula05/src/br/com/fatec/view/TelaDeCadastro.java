@@ -23,6 +23,11 @@ import javax.swing.border.BevelBorder;
 import java.awt.SystemColor;
 import javax.swing.JScrollBar;
 import javax.swing.ScrollPaneConstants;
+import java.awt.Font;
+import javax.swing.JTable;
+import java.awt.Color;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 public class TelaDeCadastro extends JFrame {
 
@@ -33,7 +38,8 @@ public class TelaDeCadastro extends JFrame {
 	private JTextField nomeInput;
 	private JButton listarBtn;
 	private JButton cadastrarBtn;
-	private JTextField textField;
+	private JButton gravarBtn;
+	private JTable table;
 
 
 	/**
@@ -57,7 +63,7 @@ public class TelaDeCadastro extends JFrame {
 	 */
 	public TelaDeCadastro() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 561);
+		setBounds(100, 100, 450, 608);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -101,10 +107,15 @@ public class TelaDeCadastro extends JFrame {
 		listarBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<Usuario> lista = Persistencia.listarUsuarios();
-				textField.setText(lista.toString());
+				DefaultTableModel tabelamodelo = (DefaultTableModel)table.getModel();
+				
+				for (Usuario user: lista) {
+					Object[] linha = {user.getId(), user.getNome(), user.getLogin(), user.getSenha()};
+					tabelamodelo.addRow(linha);
+				}
 			}
 		});
-		listarBtn.setBounds(317, 170, 107, 23);
+		listarBtn.setBounds(10, 522, 168, 23);
 		contentPane.add(listarBtn);
 		
 		cadastrarBtn = new JButton("Cadastrar");
@@ -122,16 +133,41 @@ public class TelaDeCadastro extends JFrame {
 				} else {
 					JOptionPane.showMessageDialog(null, "Confirmação de senha incorreta!");
 				}
+				
+				nomeInput.setText("");
+				loginInput.setText("");
+				senhaInput.setText("");
+				confirmacaoInput.setText("");
 			}
 		});
-		cadastrarBtn.setBounds(218, 170, 89, 23);
+		cadastrarBtn.setBounds(335, 170, 89, 23);
 		contentPane.add(cadastrarBtn);
 		
-		textField = new JTextField();
-		textField.setBackground(SystemColor.window);
-		textField.setEditable(false);
-		textField.setBounds(10, 206, 414, 305);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		JButton sairBtn = new JButton("Sair");
+		sairBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		sairBtn.setBounds(317, 522, 107, 23);
+		contentPane.add(sairBtn);
+		
+		gravarBtn = new JButton("Gravar em Arquivo");
+		gravarBtn.setBounds(10, 170, 168, 23);
+		contentPane.add(gravarBtn);
+		
+		table = new JTable();
+		table.setAutoCreateRowSorter(true);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"ID", "Nome", "Login", "Senha"
+			}
+		));
+		table.setBackground(new Color(248, 248, 255));
+		table.setBounds(10, 206, 414, 305);
+		table.getTableHeader().setVisible(true);
+		contentPane.add(table);
 	}
 }
